@@ -10,7 +10,9 @@
 import type {
   AscensionConfigurationAnswers,
   AncientAnswers,
+  BonusItemAnswer,
   CharacterAnswers,
+  CharacterStarterOverrides,
   CheckAnswers,
   ChecksAndRewardsAnswers,
   DeathLinkAnswers,
@@ -21,11 +23,17 @@ import type {
   StartingEquipmentAnswers,
   WizardAnswers,
 } from "./WizardAnswers";
+import {
+  getBonusItemDisplayRows,
+  type BonusItemDisplayRow,
+} from "./BonusItemDisplay";
 import { getConfiguredCharacterNames } from "./CharacterRoster";
 
 export interface WizardReviewSection {
   title: string;
   summary: string;
+  /** Optional structured rows rendered beneath the prose summary (Bonus Items). */
+  items?: BonusItemDisplayRow[];
 }
 
 /**
@@ -156,7 +164,10 @@ function summarizeCharacterAscensions(answers: CharacterAnswers): string {
  * @remarks Compile and validate before displaying this summary so impossible answer
  * combinations cannot be presented as if they were valid.
  */
-export function summarizeCharacterAnswers(answers: CharacterAnswers): string {
+export function summarizeCharacterAnswers(
+  answers: CharacterAnswers,
+  includeFloorChecks = true,
+): string {
   // Merge built-in portraits and complete modded IDs for all shared roster behavior.
   const roster = getConfiguredCharacterNames(answers);
 
@@ -193,7 +204,40 @@ export function summarizeCharacterAnswers(answers: CharacterAnswers): string {
   const ascensions = summarizeCharacterAscensions(answers);
 
   // Join the independently derived clauses into the final review paragraph.
-  return `${selection} ${availability} ${goal} ${ascensions}`;
+  const starters: string[] = [];
+  const configurations: Array<[string, CharacterStarterOverrides | undefined]> =
+    [
+      ...answers.selectedCharacters.map(
+        (character) =>
+          [character, answers.individualStarterOverrides?.[character]] as [
+            string,
+            CharacterStarterOverrides | undefined,
+          ],
+      ),
+      ...answers.moddedCharacters.map(
+        (character) =>
+          [character.name.trim(), character.starterOverrides] as [
+            string,
+            CharacterStarterOverrides | undefined,
+          ],
+      ),
+    ];
+  for (const [name, overrides] of configurations) {
+    for (const [key, label] of [
+      ["progressiveStarterCard", "starter card"],
+      ["progressiveStarterRelic", "starter relic"],
+    ] as const) {
+      const value = overrides?.[key];
+      if (value === "enabled" || value === "disabled")
+        starters.push(`${name}: progressive ${label} ${value}`);
+    }
+  }
+  const overrideSummary = starters.length
+    ? includeFloorChecks
+      ? ` Per-character overrides: ${starters.join("; ")}. Other starter settings inherit the global defaults.`
+      : " Saved per-character starter overrides are inactive because Floor Checks are off."
+    : "";
+  return `${selection} ${availability} ${goal} ${ascensions}${overrideSummary}`;
 }
 
 /**
@@ -284,11 +328,11 @@ export function summarizeStartingEquipmentAnswers(
 
   // Keep the all-disabled state explicit in the final review.
   if (!enabled.length) {
-    return "Progressive Starting Equipment is disabled.";
+    return "Progressive Starting Equipment is disabled by default.";
   }
 
   // Describe the selected progressive item families without exposing YAML keys.
-  return `Progressive ${joinNames(enabled)} are enabled.`;
+  return `Progressive ${joinNames(enabled)} are enabled by default.`;
 }
 
 /** Summarizes the Ancient choices displayed above additional checks. */
@@ -320,7 +364,10 @@ export function summarizeProgressionAnswers(
       ? "All locations must remain reachable."
       : "Only goal-required locations must remain reachable.";
 
-  return `${progression} ${accessibility}`;
+  const logic = answers.useNewLogic
+    ? "New logic is enabled (falls back to previous logic if floor, gold, and potion checks are all disabled)."
+    : "Previous logic is enabled.";
+  return `${logic} ${progression} ${accessibility}`;
 }
 
 /**
@@ -398,6 +445,38 @@ export function summarizeShopAnswers(answers: ShopAnswers): string {
 }
 
 /**
+ * Summarizes the configured Bonus Items subsection.
+ *
+ * @param answers - Ordered Bonus Item answers from the Checks & Rewards table.
+ * @returns A sentence covering the empty state or the configured item count.
+ */
+export function summarizeBonusItemAnswers(answers: BonusItemAnswer[]): string {
+  // Keep the deliberate empty state explicit in the final review.
+  if (!answers.length) {
+    return "No Bonus Items are added to the item pool.";
+  }
+
+  // Rows are listed individually beneath this summary, so the prose stays compact.
+  return `${countWord(answers.length)} Bonus ${
+    answers.length === 1 ? "Item is" : "Items are"
+  } added to the item pool before any filler.`;
+}
+
+/**
+ * Builds structured review rows for every configured Bonus Item.
+ *
+ * @param answers - Ordered Bonus Item answers from the Checks & Rewards table.
+ * @returns Image/name/details rows in the player's configured order.
+ * @remarks Delegates all relic resolution to the shared display helper so the
+ * review list matches the Checks & Rewards table exactly.
+ */
+export function buildBonusItemReviewRows(
+  answers: BonusItemAnswer[],
+): BonusItemDisplayRow[] {
+  return getBonusItemDisplayRows(answers);
+}
+
+/**
  * Summarizes the option families in the combined Checks & Rewards step.
  *
  * @param answers - Valid Starting Equipment, Ancient, check, Shop, and filler answers.
@@ -416,10 +495,15 @@ export function summarizeChecksAndRewardsAnswers(
   const checks = summarizeCheckAnswers(answers.checks);
   const ancients = summarizeAncientAnswers(answers.ancients);
   const shop = summarizeShopAnswers(answers.shop);
+  const bonusItems = summarizeBonusItemAnswers(answers.bonusItems);
   const filler = summarizeFillerAnswers(answers.filler);
+  const traps =
+    answers.traps.chance === 0
+      ? "Traps are disabled."
+      : `${answers.traps.chance}% of filler slots become traps, with ${Object.values(answers.traps.weights).filter((weight) => weight !== "none").length} trap types enabled. At most one queued trap applies per player per turn.`;
 
   // Preserve the visible subsection order in the final combined review paragraph.
-  return `${startingEquipment} ${ancients} ${checks} ${shop} ${filler}`;
+  return `${startingEquipment} ${ancients} ${checks} ${shop} ${bonusItems} ${filler} ${traps}`;
 }
 
 /**
@@ -474,12 +558,16 @@ export function buildWizardReviewSections(
   const sections: WizardReviewSection[] = [
     {
       title: "Character Setup",
-      summary: summarizeCharacterAnswers(answers.characters),
+      summary: summarizeCharacterAnswers(
+        answers.characters,
+        answers.checksAndRewards.checks.includeFloorChecks,
+      ),
     },
     { title: "Gameplay Modifiers", summary: summarizeRunAnswers(answers.run) },
     {
       title: "Checks & Rewards",
       summary: summarizeChecksAndRewardsAnswers(answers.checksAndRewards),
+      items: buildBonusItemReviewRows(answers.checksAndRewards.bonusItems),
     },
     {
       title: "Death Link",

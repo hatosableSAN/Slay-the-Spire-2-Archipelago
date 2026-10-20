@@ -8,6 +8,7 @@
  * module. Vue components should update this model only, never a YAML options object.
  */
 
+import { createDefaultTrapAnswers, type TrapAnswers } from "./TrapItem";
 import type { OptionCatalog } from "../generated/optionCatalog";
 import {
   getDefaultAscensionLevels,
@@ -27,6 +28,27 @@ export type CharacterSelectionMode = "all" | "random";
 export type CharacterAvailability = "all" | "random" | "fixed";
 export type CharacterGoal = "all" | number;
 export type CharacterAscensionMode = "shared" | "individual";
+
+/** Bonus item types currently supported by the wizard. More arrive in later passes. */
+export type BonusItemKind = "WAX_RELIC";
+
+/** A Wax Relic that always grants one chosen relic. */
+export interface SpecificWaxRelicBonusItem {
+  kind: "WAX_RELIC";
+  mode: "specific";
+  relicId: string;
+}
+
+/** A Wax Relic randomized from one or more selected pools. */
+export interface RandomWaxRelicBonusItem {
+  kind: "WAX_RELIC";
+  mode: "random";
+  pools: string[];
+}
+
+/** Discriminated union of every supported Bonus Item configuration. */
+export type BonusItemAnswer =
+  SpecificWaxRelicBonusItem | RandomWaxRelicBonusItem;
 
 export type AncientRelicLocation = "start_of_act" | "anytime";
 export type AncientRelicPool = "balanced" | "chaos" | "true_chaos";
@@ -61,10 +83,20 @@ export interface AscensionConfigurationAnswers {
   downs: AscensionLevel[];
 }
 
+/** UI choices map to omitted YAML fields or explicit boolean overrides. */
+export type StarterOverride = "inherit" | "enabled" | "disabled";
+
+/** Missing fields preserve global inheritance, including older wizard answers. */
+export interface CharacterStarterOverrides {
+  progressiveStarterCard?: StarterOverride;
+  progressiveStarterRelic?: StarterOverride;
+}
+
 /** Editable Steam Workshop character ID and its preserved individual settings. */
 export interface ModdedCharacterAnswers {
   name: string;
   ascensions: AscensionConfigurationAnswers;
+  starterOverrides?: CharacterStarterOverrides;
 }
 
 /** Unified Character Setup intent independent of Archipelago's two YAML systems. */
@@ -74,6 +106,7 @@ export interface CharacterAnswers {
   ascensionMode: CharacterAscensionMode;
   sharedAscensions: AscensionConfigurationAnswers;
   individualAscensions: Record<string, AscensionConfigurationAnswers>;
+  individualStarterOverrides?: Record<string, CharacterStarterOverrides>;
   selectionMode: CharacterSelectionMode;
   randomCharacterCount: number;
   availability: CharacterAvailability;
@@ -103,6 +136,7 @@ export interface AncientAnswers {
 }
 
 export interface ProgressionAnswers {
+  useNewLogic: boolean;
   progressionBalancing: number;
   accessibility: AccessibilityMode;
 }
@@ -131,7 +165,9 @@ export interface ChecksAndRewardsAnswers {
   ancients: AncientAnswers;
   checks: CheckAnswers;
   shop: ShopAnswers;
+  bonusItems: BonusItemAnswer[];
   filler: FillerAnswers;
+  traps: TrapAnswers;
 }
 
 export interface DeathLinkAnswers {
@@ -297,6 +333,7 @@ export function createDefaultWizardAnswers(
       ascensionMode: "shared",
       sharedAscensions,
       individualAscensions,
+      individualStarterOverrides: {},
       selectionMode: "all",
       randomCharacterCount: 1,
       availability: "random",
@@ -374,9 +411,16 @@ export function createDefaultWizardAnswers(
           "Tiered",
         ]),
       },
+      // Bonus Items start empty; each one is added deliberately through the table UI.
+      bonusItems: [],
       filler,
+      traps: createDefaultTrapAnswers(catalog),
     },
     progression: {
+      useNewLogic: getBooleanDefault(
+        catalog,
+        PROGRESSION_OPTION_KEYS.useNewLogic,
+      ),
       progressionBalancing: getNumberDefault(
         catalog,
         PROGRESSION_OPTION_KEYS.progressionBalancing,

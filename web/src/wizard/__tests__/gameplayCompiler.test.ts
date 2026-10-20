@@ -21,8 +21,9 @@ import {
   STARTING_EQUIPMENT_OPTION_KEYS,
 } from "../WizardOptionKey";
 import {
-  visibleCheckQuestionIds,
-  visibleDeathLinkQuestionIds,
+  checkSetupStep,
+  deathLinkSetupStep,
+  getVisibleQuestionIds,
 } from "../WizardStep";
 import { compileWizardAnswers } from "../compiler/compileWizardAnswers";
 
@@ -95,6 +96,7 @@ function compilesConfiguredGameplaySections(): void {
     shuffleAllCards: true,
   };
   answers.progression = {
+    useNewLogic: true,
     progressionBalancing: 99,
     accessibility: "minimal",
   };
@@ -298,19 +300,23 @@ function rejectsFractionalRangeAnswers(): void {
 function revealsDependentGameplayQuestions(): void {
   // Defaults disable both sections, leaving only their controlling questions visible.
   const answers = createTestAnswers();
-  expect(visibleCheckQuestionIds(answers)).toEqual([
+  expect(getVisibleQuestionIds(checkSetupStep, answers)).toEqual([
     "starting-equipment",
     "ancient-location",
     "ancient-pool",
     "check-types",
+    "bonus-items",
     "filler-weights",
+    "trap-chance",
   ]);
-  expect(visibleDeathLinkQuestionIds(answers)).toEqual(["death-link-enabled"]);
+  expect(getVisibleQuestionIds(deathLinkSetupStep, answers)).toEqual([
+    "death-link-enabled",
+  ]);
 
   // Enabling each section should reveal every dependent configuration question.
   answers.checksAndRewards.shop.enabled = true;
   answers.deathLink.enabled = true;
-  expect(visibleCheckQuestionIds(answers)).toEqual([
+  expect(getVisibleQuestionIds(checkSetupStep, answers)).toEqual([
     "starting-equipment",
     "ancient-location",
     "ancient-pool",
@@ -318,16 +324,18 @@ function revealsDependentGameplayQuestions(): void {
     "shop-slots",
     "shop-removal",
     "shop-costs",
+    "bonus-items",
     "filler-weights",
+    "trap-chance",
   ]);
-  expect(visibleDeathLinkQuestionIds(answers)).toEqual([
+  expect(getVisibleQuestionIds(deathLinkSetupStep, answers)).toEqual([
     "death-link-enabled",
     "death-link-effects",
   ]);
 
   // The percentage question appears only for active, nonlethal damage.
   answers.deathLink.receiveDamage = true;
-  expect(visibleDeathLinkQuestionIds(answers)).toEqual([
+  expect(getVisibleQuestionIds(deathLinkSetupStep, answers)).toEqual([
     "death-link-enabled",
     "death-link-effects",
     "death-link-damage",
@@ -335,7 +343,7 @@ function revealsDependentGameplayQuestions(): void {
 
   // Lethal mode hides the percentage because the compiler supplies its fixed 100%.
   answers.deathLink.beKilled = true;
-  expect(visibleDeathLinkQuestionIds(answers)).toEqual([
+  expect(getVisibleQuestionIds(deathLinkSetupStep, answers)).toEqual([
     "death-link-enabled",
     "death-link-effects",
   ]);

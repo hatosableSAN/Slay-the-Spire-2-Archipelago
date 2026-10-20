@@ -8,16 +8,19 @@
  */
 
 import type { OptionValue } from "../generated/optionCatalog";
+import { TRAP_ITEM_DEFINITIONS } from "./TrapItem";
 import { FILLER_ITEM_DEFINITIONS } from "./FillerItem";
 import {
   CHARACTER_OPTION_KEYS,
   ANCIENT_OPTION_KEYS,
+  BONUS_ITEM_OPTION_KEY,
   CHECK_OPTION_KEYS,
   DEATH_LINK_OPTION_KEYS,
   PROGRESSION_OPTION_KEYS,
   RUN_OPTION_KEYS,
   SHOP_OPTION_KEYS,
   STARTING_EQUIPMENT_OPTION_KEYS,
+  TRAP_CHANCE_OPTION_KEY,
 } from "./WizardOptionKey";
 
 /** Basic character keys omitted when the advanced dictionary is authoritative. */
@@ -41,18 +44,24 @@ const ADVANCED_CHARACTER_OPTION_KEY = "advanced_characters";
 export function getGuidedOptionKeys(): string[] {
   // Begin with each fixed section registry in navigation order.
   const optionKeys: string[] = [
-    ...CHARACTER_OPTION_KEYS,
+    ...Object.values(CHARACTER_OPTION_KEYS),
     ...Object.values(RUN_OPTION_KEYS),
     ...Object.values(STARTING_EQUIPMENT_OPTION_KEYS),
     ...Object.values(ANCIENT_OPTION_KEYS),
     ...Object.values(CHECK_OPTION_KEYS),
     ...Object.values(SHOP_OPTION_KEYS),
+    BONUS_ITEM_OPTION_KEY,
   ];
 
   // Filler keys come from their semantic item definitions rather than a duplicate list.
   for (const definition of FILLER_ITEM_DEFINITIONS) {
     optionKeys.push(definition.optionKey);
   }
+
+  optionKeys.push(
+    TRAP_CHANCE_OPTION_KEY,
+    ...TRAP_ITEM_DEFINITIONS.map((item) => item.optionKey),
+  );
 
   // Death Link follows the combined Checks & Rewards ownership group.
   optionKeys.push(...Object.values(DEATH_LINK_OPTION_KEYS));

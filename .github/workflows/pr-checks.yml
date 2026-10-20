@@ -1,0 +1,41 @@
+name: Validate Mod
+
+on:
+  pull_request:
+    branches:
+      - main
+      - multiplayer-squashed
+      - v2
+
+permissions:
+  contents: read
+
+# If someone pushes 3 commits rapidly, don't waste time finishing the obsolete builds for commits 1 and 2
+concurrency:
+  group: validate-mod-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  release-scripts:
+    name: Test automation scripts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Test automation scripts
+        run: python -m unittest discover -s scripts/tests -p "test_*.py"
+
+  apworld:
+    name: Build APWorld
+    uses: ./.github/workflows/build-apworld.yml
+    with:
+      upload_artifact: false
+
+  # Client/loader compilation and manifest checks belong to build-sts2-compat.yml.
