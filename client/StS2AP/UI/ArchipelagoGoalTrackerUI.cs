@@ -1,4 +1,4 @@
-﻿using Godot;
+using Godot;
 using MegaCrit.Sts2.addons.mega_text;
 using StS2AP.Utils;
 using System;
@@ -173,7 +173,7 @@ namespace StS2AP.UI
             var charsToGoal = ArchipelagoClient.Settings.NumCharsGoal > 0 ? ArchipelagoClient.Settings.NumCharsGoal : ArchipelagoClient.Settings.TotalCharacters;
 
             // Update the UI
-            SetContent($"[gold]Goal: Slay the Spire with {charsToGoal} Characters[/gold]\nProgress: {GameUtility.GoaledCharactersCount} / {charsToGoal}");
+            SetContent($"[gold]目標：{charsToGoal}人のキャラクターでスパイアを踏破[/gold]\n進捗：{GameUtility.GoaledCharactersCount} / {charsToGoal}");
         }
 
         #endregion

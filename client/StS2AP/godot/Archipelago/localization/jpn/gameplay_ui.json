@@ -1,0 +1,6 @@
+{
+  "AP_LOAD_RECOVERY.header": "復旧セーブを読み込む",
+  "AP_LOAD_RECOVERY.body": "接続が切れる前に進行中だったランがある。\n\nこのランを続行する？（続行しない場合、ローカルの復旧ファイルは削除され、サーバー上のセーブデータだけが利用可能になる）",
+  "AP_LOST_CONNECTION.header": "接続が切断",
+  "AP_LOST_CONNECTION.body": "Archipelagoサーバーとの接続が切れたため、メインメニューに戻る。\n\n復旧用のセーブファイルを作成する？"
+}

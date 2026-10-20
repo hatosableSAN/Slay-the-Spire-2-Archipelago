@@ -4,6 +4,6 @@
   "AP_ITEM_RELIC_MODEL.title": "Archipelago Check",
   "AP_ITEM_RELIC_MODEL.description": "It is a check whatcha expecting",
   "ARCHIPELAGO_RELIC_RELIC_COUPONS.title": "Relic Coupons",
-  "ARCHIPELAGO_RELIC_RELIC_COUPONS.description": "Earn Relic Coupons from Elites and Treasure Chests. Each coupon is paired with an Archipelago Relic item, granting its relic through naturally or via the Archipelago rewards menu.",
+  "ARCHIPELAGO_RELIC_RELIC_COUPONS.description": "Earn Relic Coupons from Elites and Treasure Chests. Each coupon is paired with an Archipelago Relic item, granting its relic through naturally or via the Archipelago rewards menu. A negative counter means received AP Relic items are waiting for eligible natural relic rewards. A positive counter means earned coupons are waiting for AP Relic items.",
   "ARCHIPELAGO_RELIC_RELIC_COUPONS.flavor": "A promise that somewhere in the multiworld, a relic is waiting for you."
 }

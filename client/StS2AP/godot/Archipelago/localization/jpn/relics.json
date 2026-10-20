@@ -1,0 +1,9 @@
+{
+  "shop_relic_title": "{item_name}（{classification}）",
+  "shop_relic_description": "（{classification}）{player_name}への{item_name}。",
+  "AP_ITEM_RELIC_MODEL.title": "Archipelagoチェック",
+  "AP_ITEM_RELIC_MODEL.description": "チェックだ。それ以上何を期待していた？",
+  "ARCHIPELAGO_RELIC_RELIC_COUPONS.title": "レリック引換券",
+  "ARCHIPELAGO_RELIC_RELIC_COUPONS.description": "レリック引換券はエリートを倒すか宝箱を開けると獲得できる。通常の報酬や「Archipelago報酬」メニューからレリックを獲得するには、引換券1枚を消費する必要がある。枚数が負の場合は、エリートをさらに倒すかレリックを獲得できる機会を狙う必要がある。値が正のときは、特殊アイテム「レリック出現権」を入手する必要がある。",
+  "ARCHIPELAGO_RELIC_RELIC_COUPONS.flavor": "「マルチワールドのどこかに、あなたを待っているレリックがある」という意思。"
+}

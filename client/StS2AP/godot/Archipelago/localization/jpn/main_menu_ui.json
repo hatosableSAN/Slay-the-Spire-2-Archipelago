@@ -1,0 +1,8 @@
+{
+  "CONTINUE_RUN.header": "ランを続行する？",
+  "CONTINUE_RUN.body": "このキャラクターの直近のセーブデータから再開する？（死亡してもセーブデータは残る）",
+  "VERSION_MISMATCH.header": "バージョン不一致",
+  "VERSION_MISMATCH.body": "apworldとクライアントのバージョンが一致していない。このままサーバーへ接続すると、予期しない問題が発生する可能性がある。\n\nサーバーバージョン：{server}\n\nクライアントバージョン：{client}\n\nこのまま接続する？",
+  "INSTALL_APWORLD.header": "APWorldをインストール/更新する？",
+  "INSTALL_APWORLD.body": "APWorldが必要なのは、[b]自分でArchipelagoをホストする場合[/b][i]のみ[/i]である。インストールには[b]Archipelago Launcher v0.6.7以降[/b]が必要になる。\n\nバックグラウンドでのインストールには少し時間がかかり、完了後にランチャーを再起動する必要がある。続行する？"
+}

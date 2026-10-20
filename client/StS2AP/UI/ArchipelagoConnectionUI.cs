@@ -206,7 +206,7 @@ namespace StS2AP.UI
             // Title
             var title = new Label();
             title.Name = "Title";
-            title.Text = "Archipelago Connection";
+            title.Text = "Archipelago接続";
             title.HorizontalAlignment = HorizontalAlignment.Center;
             title.AddThemeFontSizeOverride("font_size", 24);
             title.AddThemeColorOverride("font_color", new Color(0.9f, 0.75f, 0.3f)); // Gold color
@@ -220,17 +220,17 @@ namespace StS2AP.UI
             var cachedData = ConnectionData.Load();
 
             // Slot Name field
-            vbox.AddChild(CreateLabeledInput("Slot Name:", "Enter your slot name...", out _slotNameInput));
+            vbox.AddChild(CreateLabeledInput("スロット名：", "スロット名を入力…", out _slotNameInput));
             _slotNameInput!.Name = "SlotNameInput";
             _slotNameInput!.Text = cachedData.SlotName;
 
             // URL field
-            vbox.AddChild(CreateLabeledInput("Server URL:", "archipelago.gg:38281", out _urlInput));
+            vbox.AddChild(CreateLabeledInput("サーバーURL：", "archipelago.gg:38281", out _urlInput));
             _urlInput!.Name = "UrlInput";
             _urlInput!.Text = cachedData.Connection; // Default value
 
             // Password field
-            vbox.AddChild(CreateLabeledInput("Password:", "(optional)", out _passwordInput, isSecret: true));
+            vbox.AddChild(CreateLabeledInput("パスワード：", "（任意）", out _passwordInput, isSecret: true));
             _passwordInput!.Name = "PasswordInput";
             _passwordInput!.Text = cachedData.Password;
 
@@ -247,13 +247,13 @@ namespace StS2AP.UI
             vbox.AddChild(buttonContainer);
 
             // Close button
-            _closeButton = CreateStyledButton("Close", new Color(0.5f, 0.5f, 0.5f));
+            _closeButton = CreateStyledButton("閉じる", new Color(0.5f, 0.5f, 0.5f));
             _closeButton.Name = "CloseButton";
             _closeButton.Pressed += OnCloseButtonPressed;
             buttonContainer.AddChild(_closeButton);
 
             // Connect button
-            _connectButton = CreateStyledButton("Connect", new Color(0.2f, 0.6f, 0.3f));
+            _connectButton = CreateStyledButton("接続", new Color(0.2f, 0.6f, 0.3f));
             _connectButton.Name = "ConnectButton";
             _connectButton.Pressed += OnConnectButtonPressed;
             buttonContainer.AddChild(_connectButton);
@@ -484,20 +484,20 @@ namespace StS2AP.UI
             // Validates the Slot Name
             if (string.IsNullOrWhiteSpace(slotName))
             {
-                SetStatus("Please enter a slot name");
+                SetStatus("スロット名を入力してください");
                 return;
             }
 
             // Validates a URL is present
             if (string.IsNullOrWhiteSpace(url))
             {
-                SetStatus("Please enter a server URL");
+                SetStatus("サーバーURLを入力してください");
                 return;
             }
 
             // Begin Connecting
             LogUtility.Info($"Connect pressed - Slot: {slotName}, URL: {url}");
-            SetStatus("Connecting...");
+            SetStatus("接続中…");
             SetConnectButtonEnabled(false);
             SetCloseButtonEnabled(false);
             ArchipelagoClient.ServerAddress = url;
@@ -541,7 +541,7 @@ namespace StS2AP.UI
             if (state == ConnectionState.Connected)
             {
                 // Set status
-                SetStatus("Connected successfully!");
+                SetStatus("接続しました！");
 
                 // Enter the game
                 MenuUtility.OpenCharacterSelect();
@@ -552,7 +552,7 @@ namespace StS2AP.UI
             // We failed to connect
             else if (state == ConnectionState.Disconnected)
             {
-                SetStatus("Failed to connect. Please check your details and try again.");
+                SetStatus("接続できませんでした。入力内容を確認して、もう一度お試しください。");
                 SetConnectButtonEnabled(true);
                 SetCloseButtonEnabled(true);
             }

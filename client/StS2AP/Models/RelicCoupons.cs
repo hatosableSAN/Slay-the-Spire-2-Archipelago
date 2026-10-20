@@ -12,8 +12,8 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace StS2AP.Models;
 
 /// <summary>
-/// Permanent AP-run indicator for earned natural relic rewards that have not yet been paired
-/// with a received AP Relic item. The authoritative value remains on ArchipelagoProgress.
+/// Permanent AP-run indicator for earned coupons minus AP Relic items awaiting a coupon.
+/// The signed display is derived from the saved bank and receipt state; the bank stays nonnegative.
 /// NOTE: since this is a RitsuLib relic: the appropriate relics.json localization must stay
 /// as ARCHIPELAGO to match the current ModId (even if it goes against the other localization names)
 /// </summary>
@@ -21,8 +21,6 @@ namespace StS2AP.Models;
 public sealed class RelicCoupons : ModRelicTemplate
 {
     private const string CouponIconPath = "res://images/APIcon.png";
-    private int? _activationDisplayAmount;
-    private int _activationSequence;
 
     // This is AP run-state presentation, not a character starter relic. Touch of Orobas
     // selects the first owned Starter-rarity relic, so classifying the coupon as Starter
@@ -31,8 +29,9 @@ public sealed class RelicCoupons : ModRelicTemplate
 
     public override bool ShowCounter => true;
 
-    public override int DisplayAmount =>
-        _activationDisplayAmount ?? ArchipelagoClient.Progress.BankedRelicRewards;
+    public override int DisplayAmount => Owner is { } player
+        ? RelicRewardUtility.GetExchangeBalance(player)
+        : ArchipelagoClient.Progress.BankedRelicRewards;
 
     public override bool ShouldReceiveCombatHooks => false;
 
@@ -109,19 +108,11 @@ public sealed class RelicCoupons : ModRelicTemplate
     private async Task DoActivateVisuals()
     {
         AssertMutable();
-        var activationSequence = ++_activationSequence;
-
-        // Pairing has already decremented the authoritative balance. Briefly show its previous
-        // value so an immediate earn-and-spend visibly ticks from 1 to 0 instead of appearing idle.
-        _activationDisplayAmount = ArchipelagoClient.Progress.BankedRelicRewards + 1;
+        // Pairing spends one coupon and resolves one waiting receipt, leaving the signed
+        // balance unchanged. Flash without fabricating a temporary +1 on the counter.
         InvokeCouponCountChanged();
         Flash();
-
         await Cmd.Wait(1f);
-        if (activationSequence != _activationSequence)
-            return;
-
-        _activationDisplayAmount = null;
         InvokeCouponCountChanged();
     }
 

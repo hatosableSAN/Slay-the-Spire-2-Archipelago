@@ -1,0 +1,621 @@
+// 英文の参照元：https://github.com/dlueben1/Slay-the-Spire-2-Archipelago/tree/9e5d2905c6a3c484354fabfc015cb439e4f78d26
+// 使用例・表示タイミングはコードから確認。実機確認は未実施。例の名前・数値は架空。
+{
+  "cards.json": {
+    // Death Fragments有効時、Death Linkで追加された呪いカード。{death_message}には死亡メッセージが入る。
+    // English: Death Fragment
+    "DEATH_LINK_CURSE.title": "死の断片",
+    // Death Fragments有効時、Death Linkで追加された呪いカード。{death_message}には死亡メッセージが入る。
+    // English: Made when {death_message}.
+    "DEATH_LINK_CURSE.description": "{death_message}によって生成。",
+    // ShopSanityでカード商品がAPチェックに置き換わったとき。例：（Useful）AliceへのIronclad Card Reward。
+    // English: Catalyst
+    "AP_ITEM_CARD_PROGRESSION.title": "触媒",
+    // ShopSanityでカード商品がAPチェックに置き換わったとき。例：（Useful）AliceへのIronclad Card Reward。
+    // English: ({classification}) {item_name} for {player_name}.
+    "AP_ITEM_CARD_PROGRESSION.description": "（{classification}）{player_name}へ{item_name}を送る。",
+    // ShopSanityでカード商品がAPチェックに置き換わったとき。例：（Useful）AliceへのIronclad Card Reward。
+    // English: Utility
+    "AP_ITEM_CARD_USEFUL.title": "ユーティリティ",
+    // ShopSanityでカード商品がAPチェックに置き換わったとき。例：（Useful）AliceへのIronclad Card Reward。
+    // English: ({classification}) {item_name} for {player_name}.
+    "AP_ITEM_CARD_USEFUL.description": "（{classification}）{player_name}へ{item_name}を送る。",
+    // ShopSanityでカード商品がAPチェックに置き換わったとき。例：（Useful）AliceへのIronclad Card Reward。
+    // English: Trinket
+    "AP_ITEM_CARD_FILLER.title": "小さな飾り",
+    // ShopSanityでカード商品がAPチェックに置き換わったとき。例：（Useful）AliceへのIronclad Card Reward。
+    // English: ({classification}) {item_name} for {player_name}.
+    "AP_ITEM_CARD_FILLER.description": "（{classification}）{player_name}へ{item_name}を送る。",
+    // ShopSanityでカード商品がAPチェックに置き換わったとき。例：（Useful）AliceへのIronclad Card Reward。
+    // English: Normality
+    "AP_ITEM_CARD_TRAP.title": "正常性",
+    // ShopSanityでカード商品がAPチェックに置き換わったとき。例：（Useful）AliceへのIronclad Card Reward。
+    // English: ({classification}) Inflict {item_name} for {player_name}.
+    "AP_ITEM_CARD_TRAP.description": "（{classification}）{player_name}に{item_name}を与える。"
+  },
+  "characters.json": {
+    // キャラクター選択画面で未解放キャラクターの解放条件を表示するとき。
+    // English: Hidden in the [rainbow]Multiworld[/rainbow]
+    "APCHARACTER.unlockText": "[rainbow]マルチワールド[/rainbow]のどこかに隠されている"
+  },
+  "events.json": {
+    // 章開始のAncientイベントでレリック選択が利用できず、先へ進む選択肢に置き換わったとき。
+    // English: Time for some Burger King.
+    "AP_PROCEED.title": "バーガーキングの時間だ。"
+  },
+  "gameplay_ui.json": {
+    // AP接続中にキャラクター選択画面を開き、ローカルの復旧セーブがある場合。
+    // English: Load Recovery Save
+    "AP_LOAD_RECOVERY.header": "復旧セーブを読み込む",
+    // AP接続中にキャラクター選択画面を開き、ローカルの復旧セーブがある場合。
+    // English: You had a run in-progress before losing connection.\n\n Would you like to continue it? (If not, the local recovery file will be deleted, and you'll only have access to saves available on the server')
+    "AP_LOAD_RECOVERY.body": "接続が切れる前に進行中だったランがある。\n\nこのランを続行する？（続行しない場合、ローカルの復旧ファイルは削除され、サーバー上のセーブデータだけが利用可能になる）",
+    // ラン中にAPサーバーとの接続が切れたとき。復旧セーブを作るか確認。
+    // English: Lost Connection
+    "AP_LOST_CONNECTION.header": "接続が切断",
+    // ラン中にAPサーバーとの接続が切れたとき。復旧セーブを作るか確認。
+    // English: Connection to the Archipelago Server has been lost. You will be returned to the Main Menu now.\n\n Would you like to make a recovery save file?
+    "AP_LOST_CONNECTION.body": "Archipelagoサーバーとの接続が切れたため、メインメニューに戻る。\n\n復旧用のセーブファイルを作成する？"
+  },
+  "main_menu_ui.json": {
+    // キャラクターの出発ボタンを押したとき、そのキャラクターのAPセーブが残っていれば表示。
+    // English: Continue Run?
+    "CONTINUE_RUN.header": "ランを続行する？",
+    // キャラクターの出発ボタンを押したとき、そのキャラクターのAPセーブが残っていれば表示。
+    // English: Would you like to resume your last AP save for this character? (Yes, AP keeps the save even if you die.)
+    "CONTINUE_RUN.body": "このキャラクターの直近のセーブデータから再開する？（死亡してもセーブデータは残る）",
+    // 接続時、APWorldとクライアントの互換バージョンが違う場合。{server}と{client}には各バージョンが入る。
+    // English: 現在のGitHubソースに対応する文言なし（ローカル版と実装が異なる）。
+    "VERSION_MISMATCH.header": "バージョン不一致",
+    // 接続時、APWorldとクライアントの互換バージョンが違う場合。{server}と{client}には各バージョンが入る。
+    // English: 現在のGitHubソースに対応する文言なし（ローカル版と実装が異なる）。
+    "VERSION_MISMATCH.body": "apworldとクライアントのバージョンが一致していない。このままサーバーへ接続すると、予期しない問題が発生する可能性がある。\n\nサーバーバージョン：{server}\n\nクライアントバージョン：{client}\n\nこのまま接続する？",
+    // メインメニューでAPWorldのインストールボタンを押したとき。
+    // English: Install/Update APWorld?
+    "INSTALL_APWORLD.header": "APWorldをインストール/更新する？",
+    // メインメニューでAPWorldのインストールボタンを押したとき。
+    // English: The APWorld is [i]only necessary[/i] if you're [b]hosting the Archipelago yourself[/b], and to install it you must have the [b]Archipelago Launcher (v0.6.7 or later) installed[/b] for this to work.\n\nThis will install in the background and take a few moments, then please restart your launcher. Proceed?
+    "INSTALL_APWORLD.body": "APWorldが必要なのは、[b]自分でArchipelagoをホストする場合[/b][i]のみ[/i]である。インストールには[b]Archipelago Launcher v0.6.7以降[/b]が必要になる。\n\nバックグラウンドでのインストールには少し時間がかかり、完了後にランチャーを再起動する必要がある。続行する？"
+  },
+  "potions.json": {
+    // ShopSanityでポーション・レリック商品がAPチェックに置き換わったときの商品情報。例：（Useful）AliceへのIronclad Card Reward。
+    // English: Archipelago Item
+    "shop_potion_title": "Archipelagoアイテム",
+    // ShopSanityでポーション・レリック商品がAPチェックに置き換わったときの商品情報。例：（Useful）AliceへのIronclad Card Reward。
+    // English: ({classification}) {item_name} for {player_name}.
+    "shop_potion_description": "（{classification}）{player_name}への{item_name}。",
+    // ShopSanityでポーション・レリック商品がAPチェックに置き換わったときの商品情報。例：（Useful）AliceへのIronclad Card Reward。
+    // English: Archipelago Check
+    "AP_ITEM_POTION_MODEL.title": "Archipelagoチェック",
+    // ShopSanityでポーション・レリック商品がAPチェックに置き換わったときの商品情報。例：（Useful）AliceへのIronclad Card Reward。
+    // English: It is a check whatcha expecting
+    "AP_ITEM_POTION_MODEL.description": "チェックだ。それ以上何を期待していた？"
+  },
+  "relics.json": {
+    // ShopSanityでポーション・レリック商品がAPチェックに置き換わったときの商品情報。例：（Useful）AliceへのIronclad Card Reward。
+    // English: {item_name} ({classification})
+    "shop_relic_title": "{item_name}（{classification}）",
+    // ShopSanityでポーション・レリック商品がAPチェックに置き換わったときの商品情報。例：（Useful）AliceへのIronclad Card Reward。
+    // English: ({classification}) {item_name} for {player_name}.
+    "shop_relic_description": "（{classification}）{player_name}への{item_name}。",
+    // ShopSanityでポーション・レリック商品がAPチェックに置き換わったときの商品情報。例：（Useful）AliceへのIronclad Card Reward。
+    // English: Archipelago Check
+    "AP_ITEM_RELIC_MODEL.title": "Archipelagoチェック",
+    // ShopSanityでポーション・レリック商品がAPチェックに置き換わったときの商品情報。例：（Useful）AliceへのIronclad Card Reward。
+    // English: It is a check whatcha expecting
+    "AP_ITEM_RELIC_MODEL.description": "チェックだ。それ以上何を期待していた？",
+    // APランで所持するレリック引換券カウンターのレリック情報。
+    // English: Relic Coupons
+    "ARCHIPELAGO_RELIC_RELIC_COUPONS.title": "レリック引換券",
+    // APランで所持するレリック引換券カウンターのレリック情報。
+    // English: Earn Relic Coupons from Elites and Chests. Coupons pair with Archipelago Relic items, granting relics through natural rewards or the Archipelago Rewards menu. A negative counter means you need to defeat more Elites or find more eligible relic rewards; a positive counter means you need to receive more AP Relic items.
+    "ARCHIPELAGO_RELIC_RELIC_COUPONS.description": "レリック引換券はエリートを倒すか宝箱を開けると獲得できる。通常の報酬や「Archipelago報酬」メニューからレリックを獲得するには、引換券1枚を消費する必要がある。枚数が負の場合は、エリートをさらに倒すかレリックを獲得できる機会を狙う必要がある。値が正のときは、特殊アイテム「レリック出現権」を入手する必要がある。",
+    // APランで所持するレリック引換券カウンターのレリック情報。
+    // English: A promise that somewhere in the multiworld, a relic is waiting for you.
+    "ARCHIPELAGO_RELIC_RELIC_COUPONS.flavor": "「マルチワールドのどこかに、あなたを待っているレリックがある」という意思。"
+  },
+  "rest_site_ui.json": {
+    // CampfireSanityの休憩所でAPチェックを選ぶとき。名前はアイテム分類によって変わり、{description}には報酬情報が入る。
+    // English: Seems important!
+    "OPTION_PROGRESSION.name": "重要そうだ！",
+    // CampfireSanityの休憩所でAPチェックを選ぶとき。名前はアイテム分類によって変わり、{description}には報酬情報が入る。
+    // English: Might be useful?
+    "OPTION_USEFUL.name": "役に立つかも？",
+    // CampfireSanityの休憩所でAPチェックを選ぶとき。名前はアイテム分類によって変わり、{description}には報酬情報が入る。
+    // English: Who left this here?
+    "OPTION_FILLER.name": "誰がこんな所に置いた？",
+    // CampfireSanityの休憩所でAPチェックを選ぶとき。名前はアイテム分類によって変わり、{description}には報酬情報が入る。
+    // English: Seems important?
+    "OPTION_TRAP.name": "重要そう？",
+    // 休憩所に利用できる選択肢がないときの「何もしない」選択肢。
+    // English: Do Nothing
+    "OPTION_NOTHING.name": "何もしない",
+    // 休憩所に利用できる選択肢がないときの「何もしない」選択肢。
+    // English: Leave without resting or upgrading a card.
+    "OPTION_NOTHING.descriptionDisabled": "[red]休憩権／鍛冶権が不足している[/red]",
+    // CampfireSanityの休憩所でAPチェックを選ぶとき。名前はアイテム分類によって変わり、{description}には報酬情報が入る。
+    // English: {description}
+    "OPTION_CHECK.description": "{description}"
+  },
+  "static_hover_tips.json": {
+    // ラン中の上部バーで、対応するAP報酬・休憩・鍛冶アイコンにマウスを乗せたとき。
+    // English: Archipelago Rewards
+    "ARCHIPELAGO_TOPBARBUTTON_REWARDS.title": "Archipelago報酬",
+    // ラン中の上部バーで、対応するAP報酬・休憩・鍛冶アイコンにマウスを乗せたとき。
+    // English: Claim the rewards that have been sent to you from the Multiworld! The items refresh on each new run.
+    "ARCHIPELAGO_TOPBARBUTTON_REWARDS.description": "マルチワールドから送られた報酬を受け取る。アイテムは新しいランを開始するたびに更新される。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Card Checks
+    "AP_REWARD_CARD_CHECKS.title": "チェック済カード報酬",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of AP Checks found that replaced Card Rewards
+    "AP_REWARD_CARD_CHECKS.description": "カード報酬の代わりに発見したチェックポイントの数",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Rare Card Checks
+    "AP_REWARD_RARE_CARD_CHECKS.title": "チェック済レアカード報酬",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of AP Checks found that replaced Rare Card Rewards
+    "AP_REWARD_RARE_CARD_CHECKS.description": "レアカード報酬の代わりに発見したチェックポイントの数",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Relic Checks
+    "AP_REWARD_RELIC_CHECKS.title": "チェック済レリック報酬",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of AP Checks found that replaced Relic Rewards
+    "AP_REWARD_RELIC_CHECKS.description": "レリック報酬の代わりに発見したチェックポイントの数",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Ancient Checks
+    "AP_REWARD_ANCIENT_CHECKS.title": "チェック済エンシェント",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of AP Checks found at Ancient Relics
+    "AP_REWARD_ANCIENT_CHECKS.description": "エンシェントのレリックの代わりに発見したチェックポイントの数",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Floorsanity Checks
+    "AP_REWARD_FLOORSANITY_CHECKS.title": "チェック済フロア到達",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of AP Checks sent for each floor reached
+    "AP_REWARD_FLOORSANITY_CHECKS.description": "各階への到達時に発見したチェックポイントの数",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Potionsanity Checks
+    "AP_REWARD_POTIONSANITY_CHECKS.title": "チェック済ポーション報酬",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of AP Checks found that replaced Potion Rewards
+    "AP_REWARD_POTIONSANITY_CHECKS.description": "ポーション報酬の代わりに発見したチェックポイントの数",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Goldsanity Checks
+    "AP_REWARD_GOLDSANITY_CHECKS.title": "チェック済ゴールド報酬",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of AP Checks found that replaced Gold Rewards
+    "AP_REWARD_GOLDSANITY_CHECKS.description": "ゴールド報酬の代わりに発見したチェックポイントの数",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Campfiresanity Checks
+    "AP_REWARD_CAMPFIRESANITY_CHECKS.title": "チェック済休憩所報酬",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of AP Checks found from Rest Sites
+    "AP_REWARD_CAMPFIRESANITY_CHECKS.description": "休憩所で発見したチェックポイントの数",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Pressed Start
+    "AP_REWARD_PRESS_START_CHECK.title": "ラン開始済",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Whether this character has earned a check by starting a run.
+    "AP_REWARD_PRESS_START_CHECK.description": "このキャラクターがラン開始によるチェックを獲得済か",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Slayed the Spire
+    "AP_REWARD_CLEARED_CHECK.title": "スパイアを攻略済",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Whether this character has earned a check by completing a run.
+    "AP_REWARD_CLEARED_CHECK.description": "このキャラクターがラン完了によるチェックを獲得済か",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Card Rewards
+    "AP_REWARD_CARD_REWARDS.title": "カード報酬",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Card Rewards received for this character. You can redeem these at the start of each run.
+    "AP_REWARD_CARD_REWARDS.description": "このキャラクターが受け取ったカード報酬の数。各ランの開始時に交換できる。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Rare Card Rewards
+    "AP_REWARD_RARE_CARD_REWARDS.title": "レアカード報酬",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Rare Card Rewards received for this character. You can redeem these at the start of each run.
+    "AP_REWARD_RARE_CARD_REWARDS.description": "このキャラクターが受け取ったレアカード報酬の数。各ランの開始時に消費できる。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Relic Rewards
+    "AP_REWARD_RELIC_REWARDS.title": "レリック報酬",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Relic Rewards received for this character. You can redeem these at the start of each run.
+    "AP_REWARD_RELIC_REWARDS.description": "このキャラクターが受け取ったレリック報酬の数。各ランの開始時に消費できる。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Progressive Ancients
+    "AP_REWARD_PROGRESSIVE_ANCIENTS.title": "エンシェント利用権",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Progressive Ancients received for this character. You can redeem these at their usual location.
+    "AP_REWARD_PROGRESSIVE_ANCIENTS.description": "このキャラクターが受け取ったエンシェント利用権の数。通常の出現場所で消費できる。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Potion Rewards
+    "AP_REWARD_POTION_REWARDS.title": "ポーション報酬",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Potion Rewards received for this character. You can redeem these at the start of each run.
+    "AP_REWARD_POTION_REWARDS.description": "このキャラクターが受け取ったポーション報酬の数。各ランの開始時に消費できる。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Gold
+    "AP_REWARD_GOLD_REWARDS.title": "ゴールド",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The total amount of Gold received for this character. You can redeem this at the start of each run.
+    "AP_REWARD_GOLD_REWARDS.description": "このキャラクターが受け取ったゴールドの合計。各ランの開始時に消費できる。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Progressive Rests
+    "AP_REWARD_PROGRESSIVE_REST.title": "休憩利用権",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Progressive Rest rewards received for this character. The number of these represents the highest Act you can Heal at.
+    "AP_REWARD_PROGRESSIVE_REST.description": "このキャラクターが受け取った休憩利用権の数。あなたは、この値の層まで休憩所にて回復を利用できる。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Progressive Smiths
+    "AP_REWARD_PROGRESSIVE_SMITH.title": "鍛冶利用権",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Progressive Smith rewards received for this character. The number of these represents the highest Act you can Upgrade at.
+    "AP_REWARD_PROGRESSIVE_SMITH.description": "このキャラクターが受け取った鍛冶利用権の数。この値の層まで休憩所にてカード強化を利用できる。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Shop Card Slots
+    "AP_REWARD_SHOP_CARD_SLOTS.title": "ショップのカード枠",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Shop Card Slots received for this character. You can find those at the merchant.
+    "AP_REWARD_SHOP_CARD_SLOTS.description": "このキャラクターが受け取ったショップのカード枠の数。商人の店で利用できる。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Shop Neutral Card Slots
+    "AP_REWARD_SHOP_NEUTRAL_SLOTS.title": "ショップの無色カード枠",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Shop Neutral Card Slots received for this character. You can find those at the merchant.
+    "AP_REWARD_SHOP_NEUTRAL_SLOTS.description": "このキャラクターが受け取ったショップの無色カード枠の数。商人の店で利用できる。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Shop Relic Slots
+    "AP_REWARD_SHOP_RELIC_SLOTS.title": "ショップのレリック枠",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Shop Relic Slots received for this character. You can find those at the merchant.
+    "AP_REWARD_SHOP_RELIC_SLOTS.description": "このキャラクターが受け取ったショップのレリック枠の数。商人の店で利用できる。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Shop Potion Slots
+    "AP_REWARD_SHOP_POTION_SLOTS.title": "ショップのポーション枠",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Shop Potion Slots received for this character. You can find those at the merchant.
+    "AP_REWARD_SHOP_POTION_SLOTS.description": "このキャラクターが受け取ったショップのポーション枠の数。商人の店で利用できる。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Progressive Shop Card Removal
+    "AP_REWARD_SHOP_REMOVES.title": "ショップ内カード削除権",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Progressive Shop Card Removals received for this character. You can find those at the merchant.
+    "AP_REWARD_SHOP_REMOVES.description": "このキャラクターが受け取ったショップ内カード削除権の数。商人の店で利用できる。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: ShopSanity Checks
+    "AP_REWARD_SHOPSANITY_CHECKS.title": "チェック済ショップ到達",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of AP checks found at the shop
+    "AP_REWARD_SHOPSANITY_CHECKS.description": "ショップへの到達時に発見したチェックポイントの数",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Progressive Starter Card
+    "AP_REWARD_PROGRESSIVE_STARTER_CARD.title": "初期カード利用権",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Progressive Starter Card items received for this character. For supported characters: none, the normal starter card, then its Archaic Tooth transformation.
+    "AP_REWARD_PROGRESSIVE_STARTER_CARD.description": "このキャラクターが受け取った初期カード利用権の数。対応キャラクターでは「なし」→「通常の初期カード」→「古代の牙」と変化する。",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: Progressive Starter Relic
+    "AP_REWARD_PROGRESSIVE_STARTER_RELIC.title": "初期レリック利用権",
+    // キャラクター選択画面の進捗一覧で、この項目にマウスを乗せたときの説明。関連設定が有効な場合だけ現れる項目もある。
+    // English: The number of Progressive Starter Relic items received for this character. For supported characters: none, the normal starter relic, then its Touch of Orobas refinement.
+    "AP_REWARD_PROGRESSIVE_STARTER_RELIC.description": "このキャラクターが受け取った初期レリック利用権の数。対応キャラクターでは「なし」→「通常の初期レリック」→「オロバスの指先」と変化する。",
+    // ラン中の上部バーで、対応するAP報酬・休憩・鍛冶アイコンにマウスを乗せたとき。
+    // English: Rest Availability
+    "ARCHIPELAGO_TOPBARBUTTON_PROGRESSIVE_REST.title": "休憩の利用可否",
+    // ラン中の上部バーで、対応するAP報酬・休憩・鍛冶アイコンにマウスを乗せたとき。
+    // English: Shows whether Rest is available in the current Act. A green check means enabled; a red X means you still need this Act's Progressive Rest. Rest is always enabled when Campfire Sanity is off.
+    "ARCHIPELAGO_TOPBARBUTTON_PROGRESSIVE_REST.description": "現在のActで休憩を利用できるかを示す。緑のチェックは利用可能、赤い×はこのAct用の休憩利用権がまだないことを表す。Campfire Sanityが無効の場合、休憩は常に利用できる。",
+    // ラン中の上部バーで、対応するAP報酬・休憩・鍛冶アイコンにマウスを乗せたとき。
+    // English: Smith Availability
+    "ARCHIPELAGO_TOPBARBUTTON_PROGRESSIVE_SMITH.title": "鍛冶の利用可否",
+    // ラン中の上部バーで、対応するAP報酬・休憩・鍛冶アイコンにマウスを乗せたとき。
+    // English: Shows whether Smith is available in the current Act. A green check means enabled; a red X means you still need this Act's Progressive Smith. Smith is always enabled when Campfire Sanity is off.
+    "ARCHIPELAGO_TOPBARBUTTON_PROGRESSIVE_SMITH.description": "現在のActで鍛冶を利用できるかを示す。緑のチェックは利用可能、赤い×はこのAct用の鍛冶利用権がまだないことを表す。Campfire Sanityが無効の場合、鍛冶は常に利用できる。"
+  },
+  "item_names": {
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Free Attack
+    "Free Attack": "フリーアタック",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Free Power
+    "Free Power": "フリーパワー",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Free Skill
+    "Free Skill": "フリースキル",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Dexterity
+    "Dexterity": "敏捷性",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Strength
+    "Strength": "筋力",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Plating
+    "Plating": "プレートアーマー",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Friendship
+    "Friendship": "友情",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Post-Combat Card Upgrade
+    "Post-Combat Card Upgrade": "戦闘後のカードアップグレード",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Post-Combat Card Removal
+    "Post-Combat Card Removal": "戦闘後のカード削除",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Additional Card Reward
+    "Additional Card Reward": "追加のカード報酬",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Buffer
+    "Buffer": "バッファー",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Vigor
+    "Vigor": "活力",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Thorns
+    "Thorns": "トゲ",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Artifact
+    "Artifact": "アーティファクト",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Ironclad
+    "Ironclad": "アイアンクラッド",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Silent
+    "Silent": "サイレント",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Defect
+    "Defect": "ディフェクト",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Regent
+    "Regent": "リージェント",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Necrobinder
+    "Necrobinder": "ネクロバインダー",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Card Reward
+    "Card Reward": "カード報酬",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Rare Card Reward
+    "Rare Card Reward": "レアカード報酬",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Relic
+    "Relic": "レリック",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Progressive Ancient
+    "Progressive Ancient": "エンシェント利用権",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: One Gold
+    "One Gold": "1ゴールド",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Five Gold
+    "Five Gold": "5ゴールド",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Combat Gold
+    "Combat Gold": "通常戦闘ゴールド",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Elite Gold
+    "Elite Gold": "エリート戦ゴールド",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Boss Gold
+    "Boss Gold": "ボス戦ゴールド",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Progressive Rest
+    "Progressive Rest": "休憩利用権",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Progressive Smith
+    "Progressive Smith": "鍛冶利用権",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Shop Card Slot
+    "Shop Card Slot": "ショップのカード枠",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Neutral Shop Card Slot
+    "Neutral Shop Card Slot": "ショップの無色カード枠",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Shop Relic Slot
+    "Shop Relic Slot": "ショップのレリック枠",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Shop Potion Slot
+    "Shop Potion Slot": "ショップのポーション枠",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Progressive Shop Remove
+    "Progressive Shop Remove": "ショップ内カード削除権",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Unlock
+    "Unlock": "キャラクター解放",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Potion
+    "Potion": "ポーション",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Progressive Starter Card
+    "Progressive Starter Card": "初期カード利用権",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Progressive Starter Relic
+    "Progressive Starter Relic": "初期レリック利用権",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Victory
+    "Victory": "勝利",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Beat Act 1 Boss
+    "Beat Act 1 Boss": "第1層ボス撃破",
+    // AP報酬一覧や受信通知のアイテム名。キャラクター別の例：アイアンクラッド：カード報酬。
+    // English: Beat Act 2 Boss
+    "Beat Act 2 Boss": "第2層ボス撃破"
+  },
+  "ui_texts": [
+    // チェックの報酬表示。例：Aliceへのアイアンクラッド：カード報酬。
+    // English: {loc.Value.ItemDisplayName} for {loc.Value.Player.Name}
+    "{player_name}に{item_name}",
+    // 取得済みチェックの報酬名。例：アイアンクラッド：カード報酬（受取済み）。
+    // English: {_location?.ItemDisplayName ?? locationName} (Claimed)
+    "{item_name}（受取済み）",
+    // メインメニューまたはラン中のポーズメニューのボタン。
+    // English: Play
+    "プレイ",
+    // メインメニューまたはラン中のポーズメニューのボタン。
+    // English: Game Settings
+    "ゲーム設定",
+    // メインメニューまたはラン中のポーズメニューのボタン。
+    // English: Archipelago Settings
+    "Archipelago設定",
+    // メインメニューまたはラン中のポーズメニューのボタン。
+    // English: Install APWorld
+    "APWorldをインストール",
+    // メインメニューまたはラン中のポーズメニューのボタン。
+    // English: Mod Website & YAML Builder
+    "Modサイト・YAML作成",
+    // メインメニューまたはラン中のポーズメニューのボタン。
+    // English: Quit
+    "終了",
+    // キャラクター選択画面の進捗一覧の見出し。
+    // English: [gold]Checks Found[/gold]                                 [gold]Received Items[/gold]
+    "[gold]発見したチェック[/gold]                                 [gold]受信アイテム[/gold]",
+    // Archipelago接続画面のタイトル・入力欄・ボタン。
+    // English: Archipelago Connection
+    "Archipelago接続",
+    // Archipelago接続画面のタイトル・入力欄・ボタン。
+    // English: Slot Name:
+    "スロット名：",
+    // Archipelago接続画面のタイトル・入力欄・ボタン。
+    // English: Enter your slot name...
+    "スロット名を入力…",
+    // Archipelago接続画面のタイトル・入力欄・ボタン。
+    // English: Server URL:
+    "サーバーURL：",
+    // Archipelago接続画面のタイトル・入力欄・ボタン。
+    // English: Password:
+    "パスワード：",
+    // Archipelago接続画面のタイトル・入力欄・ボタン。
+    // English: (optional)
+    "（任意）",
+    // Archipelago接続画面のタイトル・入力欄・ボタン。
+    // English: Close
+    "閉じる",
+    // Archipelago接続画面の接続処理中・成功・失敗の状態表示。
+    // English: Connect
+    "接続",
+    // 接続ボタンを押したとき、必須の入力欄が空だった場合。
+    // English: Please enter a slot name
+    "スロット名を入力してください",
+    // 接続ボタンを押したとき、必須の入力欄が空だった場合。
+    // English: Please enter a server URL
+    "サーバーURLを入力してください",
+    // Archipelago接続画面の接続処理中・成功・失敗の状態表示。
+    // English: Connecting...
+    "接続中…",
+    // Archipelago接続画面の接続処理中・成功・失敗の状態表示。
+    // English: Connected successfully!
+    "接続しました！",
+    // Archipelago接続画面の接続処理中・成功・失敗の状態表示。
+    // English: Failed to connect. Please check your details and try again.
+    "接続できませんでした。入力内容を確認して、もう一度お試しください。",
+    // キャラクター選択画面の目標表示。例：目標：3人のキャラクターで塔を踏破、進捗：1 / 3。
+    // English: [gold]Goal: Slay the Spire with {charsToGoal} Characters[/gold]\nProgress: {GameUtility.GoaledCharactersCount} / {charsToGoal}
+    "[gold]目標：{required_characters}人のキャラクターでスパイアを踏破[/gold]\n進捗：{completed_characters} / {required_characters}",
+    // AP報酬一覧で受信済みのレリック報酬を表示するとき。
+    // English: 現在のGitHubソースに対応する文言なし（ローカル版と実装が異なる）。
+    "レリックを選択",
+    // AP報酬一覧でレリックの選択肢を生成できなかったとき。
+    // English: 現在のGitHubソースに対応する文言なし（ローカル版と実装が異なる）。
+    "レリックを選択できない",
+    // AP報酬一覧で受信済みのレリック報酬を表示するとき。
+    // English: 現在のGitHubソースに対応する文言なし（ローカル版と実装が異なる）。
+    "エンシェントを選択",
+    // AP報酬一覧でレリックの選択肢を生成できなかったとき。
+    // English: 現在のGitHubソースに対応する文言なし（ローカル版と実装が異なる）。
+    "エンシェントを選択できない",
+    // AP報酬画面。残り報酬があれば「スキップ」、なければ「進む」。
+    // English: 現在のGitHubソースに対応する文言なし（ローカル版と実装が異なる）。
+    "Archipelago報酬！",
+    // AP報酬画面。残り報酬があれば「スキップ」、なければ「進む」。
+    // English: 現在のGitHubソースに対応する文言なし（ローカル版と実装が異なる）。
+    "スキップ",
+    // AP報酬画面。残り報酬があれば「スキップ」、なければ「進む」。
+    // English: 現在のGitHubソースに対応する文言なし（ローカル版と実装が異なる）。
+    "進む",
+    // 他プレイヤーからバフを受信したときの通知。例：Bobから次のターン用に筋力が届いた！
+    // English: [color=magenta]{info.Player}[/color] provides you [sine][color=yellow]{info.ItemDisplayName}[/color][/sine] for your next turn!
+    "[color=magenta]{player_name}[/color]から次のターン用に[sine][color=yellow]{item_name}[/color][/sine]が届いた！"
+  ],
+  // 今回追加した表示文言。{...}は実行時に差し込む値。
+  // sender・receiver・itemは実際には色やアニメーションの装飾を付けて表示する。新設した日本語通知には対応する固定の英文なし。
+  "notifications": {
+    // APの未発見アイテムのヒント。例：ヒント：AliceのレリックはBobの「サイレント：レリック報酬 2」にある。
+    "hint": "ヒント：{receiver}の{item}は{sender}の「{location}」にある。",
+    // 自分のロケーションで自分用のアイテムを発見したとき。例：筋力を入手した！（アイアンクラッド：カード報酬 1）
+    "self_found": "{item}を入手した！（{location}）",
+    // 他プレイヤーから通常アイテムを受信。バフは既存の「次のターン用に…」通知だけを表示する。例：Bobからレリックが届いた！（サイレント：レリック報酬 1）
+    "item_received": "{sender}から{item}が届いた！（{location}）",
+    // 他プレイヤー用のアイテムを送信。例：Aliceにカード報酬を送った！（アイアンクラッド：カード報酬 2）
+    "item_sent": "{receiver}に{item}を送った！（{location}）",
+    // エラー通知。差し込まれるエラー詳細の言語は呼び出し元による。
+    // English: ⚠ Error: {errorMessage}
+    "error": "⚠ エラー：{errorMessage}",
+    // Death Linkに死亡理由がない場合の通知。例：Aliceが死亡した！ 理由がある場合は受信した理由をそのまま表示。
+    // English: {death.Source} has died!
+    "death_link": "[sine][color=red]{source}が死亡した！[/color][/sine]",
+    // APの目標達成時。
+    // English: Goal Complete! You have won....?
+    "goal_complete": "目標達成！勝利……？"
+  },
+  // 今回追加した表示文言。{...}は実行時に差し込む値。
+  "save_notifications": {
+    // 対象の自動セーブでサーバーの保存コールバックが返ったとき。
+    // English: [font_size=80]Game autosaved.[/font_size]
+    "autosaved": "[font_size=40]自動セーブ完了。[/font_size]",
+    // APセーブの読み込みに失敗したとき。
+    // English: Failed to load checkpoint. The checkpoint was preserved.
+    "checkpoint_load_failed": "チェックポイントの読み込みに失敗。セーブデータは保持されている。",
+    // 読み込もうとしたAPセーブが見つからないとき。
+    // English: The checkpoint could not be found.
+    "checkpoint_not_found": "チェックポイントが見つかりませんでした。"
+  },
+  // 今回追加した表示文言。{...}は実行時に差し込む値。
+  // 通知とAP報酬画面のStS2ロケーション表示に使用。characterには日本語のキャラクター名を差し込む。他ゲーム・未知の名前は原文を維持。
+  "location_names": {
+    // 例：アイアンクラッド：ラン開始。
+    // English: {character} Press Start
+    "Press Start": "{character}：ラン開始",
+    // 例：アイアンクラッド：カード報酬 1。
+    // English: {character} Card Reward {number}
+    "Card Reward": "{character}：カード報酬 {number}",
+    // 例：サイレント：レアカード報酬 2。
+    // English: {character} Rare Card Reward {number}
+    "Rare Card Reward": "{character}：レアカード報酬 {number}",
+    // 例：ディフェクト：レリック報酬 3。
+    // English: {character} Relic {number}
+    "Relic": "{character}：レリック報酬 {number}",
+    // 例：リージェント：ショップ枠 4。
+    // English: {character} Shop Slot {number}
+    "Shop Slot": "{character}：ショップ枠 {number}",
+    // 例：アイアンクラッド：戦闘ゴールド 5。
+    // English: {character} Combat Gold {number}
+    "Combat Gold": "{character}：戦闘ゴールド {number}",
+    // 例：サイレント：ポーション報酬 1。
+    // English: {character} Potion Drop {number}
+    "Potion Drop": "{character}：ポーション報酬 {number}",
+    // 例：ディフェクト：第2章のボスゴールド。
+    // English: {character} Boss Gold {number}
+    "Boss Gold": "{character}：第{number}層のボスゴールド",
+    // 例：ネクロバインダー：第1章の古代の存在。
+    // English: {character} Ancient Act {number}
+    "Ancient Act": "{character}：第{number}層のエンシェント",
+    // 例：アイアンクラッド：12階に到達。
+    // English: {character} Reached Floor {number}
+    "Reached Floor": "{character}：{number}階に到達",
+    // 例：サイレント：第2章の休憩所 1。
+    // English: {character} Act {act} Campfire {number}
+    "Campfire": "{character}：第{act}層の休憩所 {number}",
+    // 例：リージェント：第3章のボス。
+    // English: {character} Act {act} Boss
+    "Boss": "{character}：第{act}層のボス",
+    // カスタムキャラクターの名前部分。例：カスタムキャラクター1：ラン開始。
+    // English: Custom Character {number}
+    "custom_character": "MODキャラ{number}"
+  },
+  // 今回追加した表示文言。{...}は実行時に差し込む値。
+  "reward_sender": {
+    // AP報酬画面の送り主と発見場所。例：Bobから（サイレント：レリック報酬 1）。
+    // English: from {data.SenderName} ({data.FoundLocation})
+    "sender_location": "{sender}から（{location}）"
+  }
+}

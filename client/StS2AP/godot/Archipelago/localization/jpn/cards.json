@@ -1,0 +1,12 @@
+{
+  "DEATH_LINK_CURSE.title": "死の断片",
+  "DEATH_LINK_CURSE.description": "{death_message}によって生成。",
+  "AP_ITEM_CARD_PROGRESSION.title": "触媒",
+  "AP_ITEM_CARD_PROGRESSION.description": "（{classification}）{player_name}へ{item_name}を送る。",
+  "AP_ITEM_CARD_USEFUL.title": "ユーティリティ",
+  "AP_ITEM_CARD_USEFUL.description": "（{classification}）{player_name}へ{item_name}を送る。",
+  "AP_ITEM_CARD_FILLER.title": "小さな飾り",
+  "AP_ITEM_CARD_FILLER.description": "（{classification}）{player_name}へ{item_name}を送る。",
+  "AP_ITEM_CARD_TRAP.title": "正常性",
+  "AP_ITEM_CARD_TRAP.description": "（{classification}）{player_name}に{item_name}を与える。"
+}

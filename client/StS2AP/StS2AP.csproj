@@ -4,19 +4,27 @@
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
-		<PlatformTarget>x64</PlatformTarget>
+		<PlatformTarget Condition="'$(PlatformTarget)' == ''">AnyCPU</PlatformTarget>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		
 		<!-- Debug settings -->
 		<StartAction>Program</StartAction>
-		<StartProgram>$(STS2GamePath)\SlayTheSpire2.exe</StartProgram>
+		<StartProgram Condition="'$(STS2ExecutablePath)' == '' and '$(OS)' == 'Windows_NT'">$(STS2GamePath)/SlayTheSpire2.exe</StartProgram>
+		<StartProgram Condition="'$(STS2ExecutablePath)' == '' and '$(OS)' != 'Windows_NT'">$(STS2GamePath)/SlayTheSpire2.app/Contents/MacOS/Slay the Spire 2</StartProgram>
+		<StartProgram Condition="'$(STS2ExecutablePath)' != ''">$(STS2ExecutablePath)</StartProgram>
 		<StartWorkingDirectory>$(STS2GamePath)</StartWorkingDirectory>
 
 		<!-- Fallback defaults if local.props missing -->
-		<STS2GamePath Condition="'$(STS2GamePath)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2</STS2GamePath>
+		<STS2GamePath Condition="'$(STS2GamePath)' == '' and '$(OS)' == 'Windows_NT'">C:/Program Files (x86)/Steam/steamapps/common/Slay the Spire 2</STS2GamePath>
+		<STS2GamePath Condition="'$(STS2GamePath)' == '' and '$(OS)' != 'Windows_NT'">$(HOME)/Library/Application Support/Steam/steamapps/common/Slay the Spire 2</STS2GamePath>
 		<GodotExePath Condition="'$(GodotExePath)' == ''">godot</GodotExePath>
+		<GodotExportPreset Condition="'$(GodotExportPreset)' == '' and '$(OS)' == 'Windows_NT'">Windows Desktop</GodotExportPreset>
+		<GodotExportPreset Condition="'$(GodotExportPreset)' == '' and '$(OS)' != 'Windows_NT'">macOS</GodotExportPreset>
+		<GodotExportPlatform Condition="'$(GodotExportPlatform)' == ''">$(GodotExportPreset)</GodotExportPlatform>
+		<GodotArchitecture Condition="'$(GodotArchitecture)' == '' and '$(OS)' == 'Windows_NT'">x86_64</GodotArchitecture>
+		<GodotArchitecture Condition="'$(GodotArchitecture)' == '' and '$(OS)' != 'Windows_NT'">arm64</GodotArchitecture>
 		<ModName Condition="'$(ModName)' == ''">ExampleMod</ModName>
 		<ModDisplayName Condition="'$(ModDisplayName)' == ''">Example Mod</ModDisplayName>
 		<ModAuthor Condition="'$(ModAuthor)' == ''">Unknown</ModAuthor>
@@ -26,8 +34,10 @@
 		<Version>$(ModVersion)</Version>
 
 		<!-- Derived paths -->
-		<ModsOutputDir>$(STS2GamePath)\mods\$(ModName)</ModsOutputDir>
-		<GameDataDir>$(STS2GamePath)\data_sts2_windows_x86_64</GameDataDir>
+		<ModsOutputDir Condition="'$(ModsOutputDir)' == ''">$(STS2GamePath)/mods/$(ModName)</ModsOutputDir>
+		<GameDataDirectoryName Condition="'$(GameDataDirectoryName)' == '' and '$(OS)' == 'Windows_NT'">data_sts2_windows_x86_64</GameDataDirectoryName>
+		<GameDataDirectoryName Condition="'$(GameDataDirectoryName)' == '' and '$(OS)' != 'Windows_NT'">data_sts2_macos_arm64</GameDataDirectoryName>
+		<GameDataDir Condition="'$(GameDataDir)' == ''">$(STS2GamePath)/$(GameDataDirectoryName)</GameDataDir>
 		<STS2ReferenceDataDir Condition="'$(STS2ReferenceDataDir)' == ''">$(GameDataDir)</STS2ReferenceDataDir>
 		<GodotProject>$(ProjectDir)godot</GodotProject>
 	</PropertyGroup>
@@ -62,7 +72,6 @@
 			<SteamAppId>2868840</SteamAppId>
 		</PropertyGroup>
 		<WriteLinesToFile File="$(SteamAppIdPath)" Lines="$(SteamAppId)" Overwrite="true" Encoding="ASCII" WriteOnlyWhenDifferent="false" />
-		<Exec Command="powershell -Command &quot;Set-Content -Path '$(SteamAppIdPath)' -Value '$(SteamAppId)' -NoNewline -Encoding ASCII&quot;" />
 		<Message Text="Created steam_appid.txt with App ID $(SteamAppId)" Importance="high" />
 	</Target>
 
@@ -104,8 +113,8 @@ project/assembly_name="$(ModName)"
 
 [preset.0]
 
-name="Windows Desktop"
-platform="Windows Desktop"
+name="$(GodotExportPreset)"
+platform="$(GodotExportPlatform)"
 runnable=true
 advanced_options=false
 dedicated_server=false
@@ -131,7 +140,7 @@ binary_format/embed_pck=false
 texture_format/s3tc_bptc=true
 texture_format/etc2_astc=false
 shader_baker/enabled=false
-binary_format/architecture="x86_64"
+binary_format/architecture="$(GodotArchitecture)"
 codesign/enable=false
 codesign/timestamp=true
 codesign/timestamp_server_url=""
@@ -198,6 +207,6 @@ dotnet/embed_build_outputs=false
 		</PropertyGroup>
 		<Copy SourceFiles="$(ApWorldSource)" DestinationFiles="$(ApWorldDest)" Condition="Exists('$(ApWorldSource)')" />
 		<Warning Text="spire2.apworld not found in dist folder. Run scripts\build_world.ps1 to build it." Condition="!Exists('$(ApWorldSource)')" />
-		<Exec Command="&quot;$(GodotExePath)&quot; --headless --path &quot;$(GodotProject)&quot; --export-pack &quot;Windows Desktop&quot; &quot;$(ModsOutputDir)\$(ModName).pck&quot;" />
+		<Exec Command="&quot;$(GodotExePath)&quot; --headless --path &quot;$(GodotProject)&quot; --export-pack &quot;$(GodotExportPreset)&quot; &quot;$(ModsOutputDir)/$(ModName).pck&quot;" />
 	</Target>
 </Project>

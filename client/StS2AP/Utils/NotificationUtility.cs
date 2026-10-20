@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Drawing;
 using System.Reflection;
 using System.Text;
@@ -188,8 +188,9 @@ namespace StS2AP.Utils
                 case APItem.EliteGold:
                     return @"[img]res://images/packed/sprite_fonts/gold_icon.png[/img]";
                 case APItem.CardReward:
-                case APItem.RareCardReward:
                     return @"[img]res://images/packed/sprite_fonts/card_icon.png[/img]";
+                case APItem.RareCardReward:
+                    return @"[img]res://images/ui/reward_screen/reward_icon_rare.png[/img]";
                 case APItem.Potion:
                     return @"[img]res://images/packed/sprite_fonts/potion_icon.png[/img]";
                 case APItem.Unlock:
@@ -221,7 +222,16 @@ namespace StS2AP.Utils
                     return;
                 }
             }
-            var result = ToColoredString(msg);
+            // BuffUtility owns the single receipt notification after replay filtering.
+            // Keep outgoing and self-found notifications, which have no buff receipt toast.
+            if (msg is not HintItemSendLogMessage
+                && msg.IsReceiverTheActivePlayer && !msg.IsSenderTheActivePlayer
+                && msg.Item.ItemGame == ArchipelagoClient.Game
+                && msg.Item.ItemId >= (long)APItem.FreeAttack
+                && msg.Item.ItemId <= (long)APItem.Artifact)
+                return;
+
+            var result = FormatItemSend(msg);
             NotificationType type = NotificationType.Info;
             if (msg.GetType() != typeof(HintItemSendLogMessage))
             {
@@ -235,6 +245,30 @@ namespace StS2AP.Utils
                 }
             }
             EnqueueNotification(result, type);
+        }
+
+        private static string EscapeText(string text) => text.Replace("[", "[lb]");
+
+        private static string FormatItemSend(ItemSendLogMessage msg)
+        {
+            var info = msg.Item;
+            var itemName = info.ItemGame == ArchipelagoClient.Game
+                ? ItemNameLocalization.ToJapanese(info.ItemDisplayName) : info.ItemDisplayName;
+            var locationName = info.LocationGame == ArchipelagoClient.Game
+                ? ItemNameLocalization.LocationToJapanese(info.LocationDisplayName) : info.LocationDisplayName;
+            var icon = info.ItemGame == ArchipelagoClient.Game ? GetItemIcon(info) : null;
+            var item = (icon == null ? "" : icon + " ")
+                + $"[sine][color=yellow]{EscapeText(itemName)}[/color][/sine]";
+            var sender = $"[color=magenta]{EscapeText(msg.Sender.Alias)}[/color]";
+            var receiver = $"[color=magenta]{EscapeText(msg.Receiver.Alias)}[/color]";
+            var location = EscapeText(locationName);
+            if (msg is HintItemSendLogMessage)
+                return $"ヒント：{receiver}の{item}は{sender}の「{location}」にある。";
+            if (msg.IsReceiverTheActivePlayer && msg.IsSenderTheActivePlayer)
+                return $"{item}を入手した！（{location}）";
+            if (msg.IsReceiverTheActivePlayer)
+                return $"{sender}から{item}が届いた！（{location}）";
+            return $"{receiver}に{item}を送った！（{location}）";
         }
 
         public static void HandleOtherAPMessages(
@@ -340,7 +374,7 @@ namespace StS2AP.Utils
         /// <param name="errorMessage">The error to display</param>
         public static void ShowError(string errorMessage)
         {
-            var message = $"⚠ Error: {errorMessage}";
+            var message = $"⚠ エラー：{errorMessage}";
             EnqueueNotification(message, NotificationType.Error);
         }
 
@@ -376,11 +410,13 @@ namespace StS2AP.Utils
 
             // If the cause is valid, display that, otherwise use a generic message
             string cause = string.IsNullOrEmpty(death.Cause)
-                ? $"{death.Source} has died!"
+                ? $"[sine][color=red]{EscapeText(death.Source)}が死亡した！[/color][/sine]"
                 : death.Cause;
 
             // Wrap the entire message in red color and sine animation BBcode tags
-            string message = $"[sine][color=red]{cause}[/color][/sine]";
+            string message = string.IsNullOrEmpty(death.Cause)
+                ? cause
+                : $"[sine][color=red]{cause}[/color][/sine]";
             EnqueueNotification(message, NotificationType.Info);
         }
 
@@ -399,7 +435,7 @@ namespace StS2AP.Utils
 
             // Display the message
             string message =
-                $"[color=magenta]{info.Player}[/color] provides you [sine][color=yellow]{info.ItemDisplayName}[/color][/sine] for your next turn!";
+                $"[color=magenta]{EscapeText(info.Player.Alias)}[/color]から次のターン用に[sine][color=yellow]{EscapeText(ItemNameLocalization.ToJapanese(info.ItemDisplayName))}[/color][/sine]が届いた！";
             EnqueueNotification(message, NotificationType.ItemReceived);
         }
 

@@ -138,10 +138,10 @@ namespace StS2AP.Patches
                 compendiumButton.Disable();
 
                 // Change the name of "Single Player" for Archipelago
-                singleplayerButton!.label!.Text = "Play";
+                singleplayerButton!.label!.Text = "プレイ";
 
                 // Change the name of "Settings" to "Game Settings" to avoid confusion with the injected Archipelago Settings button
-                settingsButton!.label!.Text = "Game Settings";
+                settingsButton!.label!.Text = "ゲーム設定";
 
                 /// Configure the injected settings button after its label
                 /// reference has been initialized by the vanilla _Ready method.
@@ -149,7 +149,7 @@ namespace StS2AP.Patches
                 {
                     archipelagoSettingsButton.Visible = true;
                     archipelagoSettingsButton.Enable();
-                    archipelagoSettingsButton.label.Text = "Archipelago Settings";
+                    archipelagoSettingsButton.label.Text = "Archipelago設定";
                 }
 
                 /// Configure the injected Install APWorld button after its label
@@ -158,7 +158,7 @@ namespace StS2AP.Patches
                 {
                     installWorldButton.Visible = true;
                     installWorldButton.Enable();
-                    installWorldButton.label.Text = "Install APWorld";
+                    installWorldButton.label.Text = "APWorldをインストール";
                 }
 
                 /// Configure the injected Visit Website button after its label
@@ -167,7 +167,7 @@ namespace StS2AP.Patches
                 {
                     visitWebsiteButton.Visible = true;
                     visitWebsiteButton.Enable();
-                    visitWebsiteButton.label.Text = "Mod Website & YAML Builder";
+                    visitWebsiteButton.label.Text = "Modサイト・YAML作成";
                 }
             }
         }

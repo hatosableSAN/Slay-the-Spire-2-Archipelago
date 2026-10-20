@@ -72,6 +72,16 @@ namespace StS2AP.Utils
         }
 
         /// <summary>
+        /// Positive: earned coupons awaiting AP items. Negative: gated AP items awaiting coupons.
+        /// Anytime receipts, assigned choices, and consumed receipts do not create a deficit.
+        /// </summary>
+        public static int GetExchangeBalance(Player player)
+        {
+            return ArchipelagoClient.Progress.BankedRelicRewards
+                - CountWaitingReceiptsForNaturalReward(player);
+        }
+
+        /// <summary>
         /// Returns every AP Relic receipt received for the current character, including anytime,
         /// waiting, assigned, and already-consumed receipts.
         /// </summary>
@@ -118,6 +128,8 @@ namespace StS2AP.Utils
         /// </summary>
         public static void ReconcileBankedRewards(Player player)
         {
+            // New AP receipts change the signed display even when there are no coupons to pair.
+            RelicCoupons.RefreshCounter(player);
             var progress = ArchipelagoClient.Progress;
             while (progress.BankedRelicRewards > 0)
             {

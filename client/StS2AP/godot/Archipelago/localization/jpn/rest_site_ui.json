@@ -1,0 +1,12 @@
+{
+  "OPTION_PROGRESSION.name": "重要そうだ！",
+  "OPTION_APIcon.name": "重要そうだ！",
+  "OPTION_USEFUL.name": "役に立つかも？",
+  "OPTION_FILLER.name": "誰がこんな所に置いた？",
+  "OPTION_TRAP.name": "重要そう？",
+  "OPTION_NOTHING.name": "何もしない",
+  "OPTION_NOTHING.descriptionDisabled": "[red]休憩権／鍛冶権が不足している[/red]",
+  "OPTION_HEAL.descriptionDisabled": "[red]プログレッシブ休憩を十分に受け取っていない[/red]",
+  "OPTION_SMITH.descriptionDisabled": "[red]プログレッシブ鍛冶を十分に受け取っていない[/red]",
+  "OPTION_CHECK.description": "{description}"
+}

@@ -1,4 +1,4 @@
-﻿using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
 using Godot;
 using HarmonyLib;
@@ -117,7 +117,7 @@ namespace StS2AP.Patches
                         {
                             Callable.From(
                                 () => NotificationUtility.ShowRawText(
-                                    "[font_size=80]Game autosaved.[/font_size]",
+                                    "[font_size=40]自動セーブ完了。[/font_size]",
                                     timeout: 3.5,
                                     priority: NotificationUtility.NotificationPriority.High,
                                     includeInDevConsole: false
@@ -221,14 +221,14 @@ namespace StS2AP.Patches
                             saveData.Value.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined)
                         {
                             LogUtility.Error("Failed to load AP save: save_data was missing");
-                            NotificationUtility.ShowRawText("Failed to load checkpoint. The checkpoint was preserved.");
+                            NotificationUtility.ShowRawText("チェックポイントの読み込みに失敗。セーブデータは保持されている。");
                             return;
                         }
                         ReadSaveResult<SerializableRun> runResult = JsonSerializationUtility.FromJson<SerializableRun>(saveData.Value.GetRawText());
                         if (!runResult.Success || runResult.SaveData == null)
                         {
                             LogUtility.Error($"Failed to deserialize AP run save: {runResult.ErrorMessage ?? runResult.Status.ToString()}");
-                            NotificationUtility.ShowRawText("Failed to load checkpoint. The checkpoint was preserved.");
+                            NotificationUtility.ShowRawText("チェックポイントの読み込みに失敗。セーブデータは保持されている。");
                             return;
                         }
                         SerializableRun serializableRun = runResult.SaveData;
@@ -254,11 +254,11 @@ namespace StS2AP.Patches
                 catch (Exception ex)
                 {
                     LogUtility.Error($"Failed to load AP save: {ex}");
-                    NotificationUtility.ShowRawText("Failed to load checkpoint. The checkpoint was preserved.");
+                    NotificationUtility.ShowRawText("チェックポイントの読み込みに失敗。セーブデータは保持されている。");
                     return;
                 }
                 LogUtility.Error("AP save disappeared before it could be loaded; preserving the current run selection");
-                NotificationUtility.ShowRawText("The checkpoint could not be found.");
+                NotificationUtility.ShowRawText("チェックポイントが見つかりませんでした。");
             }
         }
 

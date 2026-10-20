@@ -108,7 +108,7 @@ public class ArchipelagoReward : Reward
         {
             // And update the name of the location
             var key = $"AP_LOC_{_locationId}";
-            TextUtility.RegisterLocString(key, $"{_location?.ItemDisplayName ?? locationName} (Claimed)", "ap");
+            TextUtility.RegisterLocString(key, $"{ItemNameLocalization.ToJapanese(_location?.ItemDisplayName ?? locationName)}（受取済み）", "ap");
         }
     }
 

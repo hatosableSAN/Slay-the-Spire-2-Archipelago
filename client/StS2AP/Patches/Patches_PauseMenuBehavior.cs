@@ -102,7 +102,7 @@ namespace StS2AP.Patches
             var settingsLabel = settingsButton.GetNodeOrNull<MegaLabel>("Label");
             if (settingsLabel != null)
             {
-                settingsLabel.SetTextAutoSize("Game Settings");
+                settingsLabel.SetTextAutoSize("ゲーム設定");
             }
 
             // AP saves automatically, so the pause-menu action only needs to describe quitting.
@@ -111,7 +111,7 @@ namespace StS2AP.Patches
                 ?.GetNodeOrNull<MegaLabel>("Label");
             if (saveAndQuitLabel != null)
             {
-                saveAndQuitLabel.SetTextAutoSize("Quit");
+                saveAndQuitLabel.SetTextAutoSize("終了");
             }
 
             // OnSubmenuOpened can run repeatedly, so refresh an existing button rather than injecting another copy if possible
@@ -130,7 +130,7 @@ namespace StS2AP.Patches
 
                 if (existingLabel != null)
                 {
-                    existingLabel.SetTextAutoSize("Archipelago Settings");
+                    existingLabel.SetTextAutoSize("Archipelago設定");
                 }
 
                 RewirePauseMenuFocus(buttonContainer);
@@ -169,7 +169,7 @@ namespace StS2AP.Patches
                 button.QueueFree();
                 return;
             }
-            label.SetTextAutoSize("Archipelago Settings");
+            label.SetTextAutoSize("Archipelago設定");
 
             // Remove all original click callbacks before registering ours
             GodotUtility.DisconnectSignalConnections(button, NClickableControl.SignalName.Released);

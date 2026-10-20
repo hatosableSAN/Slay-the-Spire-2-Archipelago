@@ -210,6 +210,7 @@ namespace StS2AP.UI
         // Reward type icons reward_screen set for buttons
         private const string IconGold  = "res://images/ui/reward_screen/reward_icon_money.png";
         private const string IconCard  = "res://images/ui/reward_screen/reward_icon_card.png";
+        private const string IconRareCard = "res://images/ui/reward_screen/reward_icon_rare.png";
         private const string IconRelic = "res://images/ui/reward_screen/reward_icon_shared_relic.png";
 
         // Rewards window (Control, center-anchored inside root)
@@ -317,7 +318,7 @@ namespace StS2AP.UI
         {
             var data = new ArchipelagoRewardData
             {
-                ItemName     = item.ItemDisplayName,
+                ItemName     = ItemNameLocalization.ToJapanese(item.ItemDisplayName),
                 SenderName   = item.Player.Name,
                 IconPath     = GetIconForItem(item),
                 GrantAction  = GetGrantAction(item)
@@ -382,9 +383,11 @@ namespace StS2AP.UI
                 {
                     Index = i.Index,
                     ItemOriginID = i.Item.LocationId,
-                    ItemName    = i.Item.ItemDisplayName,
+                    ItemName    = ItemNameLocalization.ToJapanese(i.Item.ItemDisplayName),
                     SenderName  = i.Item.Player.Name,
-                    FoundLocation = i.Item.LocationDisplayName,
+                    FoundLocation = i.Item.LocationGame == ArchipelagoClient.Game
+                        ? ItemNameLocalization.LocationToJapanese(i.Item.LocationDisplayName)
+                        : i.Item.LocationDisplayName,
                     IconPath    = GetIconForItem(i.Item),
                     GrantAction = GetGrantAction(i.Item),
                 };
@@ -403,14 +406,14 @@ namespace StS2AP.UI
                     );
                     if (choices.Count > 0)
                     {
-                        data.ItemName = "Choose a Relic";
+                        data.ItemName = "レリックを選択";
                         data.LinkedRelicChoices = choices;
                         data.OnClaimed = () => RelicRewardUtility.CompleteMenuClaim(i.Index);
                     }
                     else
                     {
                         // Fail closed: do not consume the AP item if its choices could not be built.
-                        data.ItemName = "Relic Choice Unavailable";
+                        data.ItemName = "レリックを選択できない";
                         data.GrantAction = () => Task.FromResult(false);
                     }
                 }
@@ -420,14 +423,14 @@ namespace StS2AP.UI
                     var choices = ArchipelagoClient.Progress.GetOrAssignAncientRelicChoices(i.Index, currentPlayer);
                     if (choices.Count == AncientRelicPool.ChoiceCount)
                     {
-                        data.ItemName = "Choose an Ancient Relic";
+                        data.ItemName = "エンシェントを選択";
                         data.LinkedRelicChoices = choices;
                         data.UseAncientRelicStyle = true;
                     }
                     else
                     {
                         // Fail closed: do not consume the AP item if its choice pool could not be built.
-                        data.ItemName = "Ancient Relic Choice Unavailable";
+                        data.ItemName = "エンシェントを選択できない";
                         data.GrantAction = () => Task.FromResult(false);
                     }
                 }
@@ -969,7 +972,7 @@ namespace StS2AP.UI
             var header = new Label
             {
                 Name                = "APRewardHeader",
-                Text                = "Archipelago Loot!",
+                Text                = "Archipelago報酬！",
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment   = VerticalAlignment.Center,
                 AutowrapMode        = TextServer.AutowrapMode.Off,
@@ -1009,7 +1012,7 @@ namespace StS2AP.UI
             var btn = new Button
             {
                 Name              = "APProceedButton",
-                Text              = "Skip",
+                Text              = "スキップ",
                 CustomMinimumSize = new Vector2(220, 60)
             };
             btn.SetAnchorsPreset(Control.LayoutPreset.BottomRight);
@@ -1272,7 +1275,7 @@ namespace StS2AP.UI
             // Sender name label (only shown if we have a sender)
             if (!string.IsNullOrEmpty(data.SenderName))
             {
-                var senderLabel = CreateTextLabel($"from {data.SenderName} ({data.FoundLocation})", RewardSenderFontSize, new Color(0.7f, 0.85f, 1f));
+                var senderLabel = CreateTextLabel($"{data.SenderName}から（{data.FoundLocation}）", RewardSenderFontSize, new Color(0.7f, 0.85f, 1f));
                 vbox.AddChild(senderLabel);
             }
 
@@ -1495,7 +1498,7 @@ namespace StS2AP.UI
         private static void UpdateProceedButton()
         {
             if (_proceedButton != null && IsInstanceValid(_proceedButton))
-                _proceedButton.Text = _remainingRewards > 0 ? "Skip" : "Proceed";
+                _proceedButton.Text = _remainingRewards > 0 ? "スキップ" : "進む";
         }
 
         /// <summary>
@@ -1545,8 +1548,9 @@ namespace StS2AP.UI
                     return IconGold;
 
                 case APItem.CardReward:
-                case APItem.RareCardReward:
                     return IconCard;
+                case APItem.RareCardReward:
+                    return IconRareCard;
 
                 case APItem.Relic:
                 case APItem.ProgressiveAncient:
@@ -1568,7 +1572,8 @@ namespace StS2AP.UI
         {
             string lower = text.ToLower();
             if (lower.Contains("gold")   || lower.Contains("money"))    return IconGold;
-            if (lower.Contains("card"))                                  return IconCard;
+            if (lower.Contains("rare card") || text.Contains("レアカード")) return IconRareCard;
+            if (lower.Contains("card") || text.Contains("カード"))       return IconCard;
             if (lower.Contains("relic")  || lower.Contains("shuriken")) return IconRelic;
             return string.Empty;
         }

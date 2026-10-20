@@ -229,7 +229,7 @@ namespace StS2AP.UI
 
                 /// SetContent() must be called after the node is in the tree — MegaRichTextLabel._Ready()
                 /// resets font size overrides on tree entry, so we apply ours immediately after.
-                SetContent("[gold]Checks Found[/gold]                                 [gold]Received Items[/gold]");
+                SetContent("[gold]発見したチェック[/gold]                                 [gold]受信アイテム[/gold]");
 
                 LogUtility.Success("[CharTracker] Archipelago char-tracker UI injected successfully");
             }
@@ -439,7 +439,7 @@ namespace StS2AP.UI
             _contentLabel.BbcodeEnabled       = true; // Required for MegaRichTextLabel effects
             _contentLabel.MouseFilter         = Control.MouseFilterEnum.Ignore;
             _contentLabel.CustomMinimumSize   = new Vector2(PanelWidth - (PanelPadding * 2), 0);
-            _contentLabel.Text = "[gold]Checks Found[/gold]                                 [gold]Received Items[/gold]";
+            _contentLabel.Text = "[gold]発見したチェック[/gold]                                 [gold]受信アイテム[/gold]";
 
             // Apply the game font so the text matches the rest of the UI
             try

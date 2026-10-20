@@ -1,4 +1,4 @@
-﻿using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
+using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Models;
 using Godot;
 using MegaCrit.Sts2.Core.Commands;
@@ -728,7 +728,7 @@ namespace StS2AP.Utils
                 {
                     ArchipelagoClient.Session.SetGoalAchieved();
                     LogUtility.Success("Goal achieved! SetGoalAchieved sent to Archipelago server.");
-                    NotificationUtility.ShowRawText("Goal Complete! You have won....?");
+                    NotificationUtility.ShowRawText("目標達成！勝利……？");
                 }
             }
             catch (Exception ex)

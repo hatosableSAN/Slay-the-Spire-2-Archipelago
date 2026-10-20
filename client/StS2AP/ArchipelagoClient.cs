@@ -1,4 +1,4 @@
-﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
@@ -634,7 +634,7 @@ namespace StS2AP
                 {
                     // Add the Item at this location to the localization table with the keys "AP_LOC_{LocationID}"
                     string locKey = $"AP_LOC_{loc.Key}";
-                    string locText = $"{loc.Value.ItemDisplayName} for {loc.Value.Player.Name}";
+                    string locText = $"{loc.Value.Player.Name}に{ItemNameLocalization.ToJapanese(loc.Value.ItemDisplayName)}";
                     locationLocalizations.Add(locKey, locText);
                     LogUtility.Warn(
                         $"{loc.Key}:{loc.Value.LocationName}:{loc.Value.LocationDisplayName}"
